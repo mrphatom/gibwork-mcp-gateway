@@ -1,0 +1,35 @@
+name: enterprise-default
+description: Safe-by-default policy for agent fleets. Allow discovery and read; require explicit allow for writes and payments.
+defaultEffect: deny
+rules:
+  - action: tasks.list
+    effect: allow
+  - action: tasks.get
+    effect: allow
+  - action: submissions.list
+    effect: allow
+  - action: wallet.read
+    effect: allow
+  - action: proof.run
+    effect: allow
+  - action: tasks.create
+    effect: allow
+    conditions:
+      environment: [stage]
+      maxAmount: 50
+  - action: submissions.create
+    effect: allow
+    conditions:
+      environment: [stage]
+  - action: proof.submit
+    effect: allow
+    conditions:
+      environment: [stage]
+  - action: submissions.approve
+    effect: deny
+  - action: tasks.refund
+    effect: deny
+budgets:
+  dailySpendLimit: 100
+  maxTasksPerDay: 25
+  maxSubmissionsPerDay: 50
